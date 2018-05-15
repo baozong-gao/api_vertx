@@ -1,0 +1,1 @@
+hystrix=com.shenxin.core.api.util.hystrix.HystrixFilter

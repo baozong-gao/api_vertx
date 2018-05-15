@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="30">
+    <appenders>
+        <console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] - %l{1} - %msg%n"/>
+        </console>
+        <File name="log" fileName="${log4j.appender.logfile.File}/test.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <RollingFile name="RollingFileInfo" fileName="${log4j.appender.logfile.File}/info.log"
+                     filePattern="${log4j.appender.logfile.File}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="RollingFileWarn" fileName="${log4j.appender.logfile.File}/warn.log"
+                     filePattern="${log4j.appender.logfile.File}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="RollingFileError" fileName="${log4j.appender.logfile.File}/error.log"
+                     filePattern="${log4j.appender.logfile.File}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <logger name="org.springframework" level="INFO"></logger>
+        <logger name="com.alibaba" level="INFO"></logger>
+        <logger name="org.I0Itec" level="INFO"></logger>
+        <logger name="org.apache" level="INFO"></logger>
+        <logger name="io.netty" level="INFO"></logger>
+        <logger name="org.hibernate" level="INFO"></logger>
+        <logger name="com.mongodb" level="INFO"></logger>
+        <logger name="org.sql2o" level="INFO"></logger>
+        <logger name="net.sf.ehcache" level="INFO"></logger>
+        <asyncRoot level="all" includeLocation="true">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+        </asyncRoot>
+    </loggers>
+</configuration>

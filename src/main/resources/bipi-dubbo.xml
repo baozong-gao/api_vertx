@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="sxapi" />
+
+
+    <!-- 使用multicast广播注册中心暴露发现服务地址 -->
+    <dubbo:registry address="${dubbo.zookeeper}" />
+    <dubbo:consumer timeout="5000" check="false"/>
+
+    <!-- 生成远程服务代理 -->
+    <dubbo:reference id="userCenterService"  interface="com.shenxin.core.account.facade.service.IUserCenterService" >
+        <dubbo:parameter key="ThreadPoolCoreSize" value="10" />
+    </dubbo:reference>
+    <dubbo:reference id="productService" interface="com.shenxin.core.account.facade.service.IProductService" />
+    <dubbo:reference id="settleService" interface="com.shenxin.core.account.facade.service.ISettleService" />
+    <dubbo:reference id="cashierService" interface="com.shenxin.core.account.facade.service.ICashierService" />
+
+    <!--  消息服务  -->
+    <dubbo:reference id="messageService" interface="com.shenxin.core.bsp.facade.service.IMessageService" />
+
+    <!-- 缴费 -->
+    <dubbo:reference id="billOpeService" interface="com.shenxin.core.publicfee.facade.service.IBillOpeService" />
+</beans>
